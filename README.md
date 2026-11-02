@@ -1,59 +1,95 @@
 # 🛍️ Cartify — Modern Cross-Platform E-Commerce Mobile App
 
-> A production-style React Native mobile application engineered with **TypeScript**, **integer cents currency precision**, dynamic coupon engine, tiered shipping calculation, and automated test coverage.
+> A high-performance, production-style React Native mobile application engineered with **TypeScript**, **sub-penny integer cents arithmetic**, dynamic coupon validation, tiered delivery algorithms, and automated test coverage.
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![React Native](https://img.shields.io/badge/React_Native-0.88-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://reactnative.dev/)
-[![Jest](https://img.shields.io/badge/Tests-11%20Passing-10B981?style=for-the-badge&logo=jest&logoColor=white)](https://jestjs.io/)
+[![Jest Tests](https://img.shields.io/badge/Tests-11%20Passing-10B981?style=for-the-badge&logo=jest&logoColor=white)](https://jestjs.io/)
+[![Design System](https://img.shields.io/badge/UI-Design_Tokens-2563EB?style=for-the-badge)](src/theme/index.ts)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)
 
 ---
 
-## 📱 Project Overview
+## 📱 App Interface Overview
 
-**Cartify** is a complete, modular, local-first E-Commerce shopping application built for iOS and Android. Designed to deliver smooth 60fps micro-interactions, responsive cart updates, and robust arithmetic safety, Cartify operates on deterministic local mock catalogs without requiring third-party credentials or commercial payment gateway keys.
-
----
-
-## ✨ Key Features
-
-1. **Precision Cart & Order Calculation Engine:**
-   - All monetary values are maintained in integer cents to eliminate floating-point arithmetic errors.
-   - Live calculations for subtotal, tiered sales tax (8.25%), discounts, and shipping.
-2. **Promotions & Promo Code Engine:**
-   - Percentage (`SAVE20`, `WELCOME10`) and flat-rate (`FLAT25`) discount models.
-   - Enforces minimum order thresholds, coupon validity checks, and dynamic feedback.
-3. **Dynamic Free Shipping Tier:**
-   - Visual progress bar notifying users how close they are to qualifying for FREE Standard Shipping ($150 threshold).
-4. **Rich Multi-Category Product Catalog:**
-   - Products across Electronics, Apparel, Home & Living, Fitness & Wellness, and Accessories.
-   - Product specifications, customer reviews, stock counts, discount badges, and rating stars.
-5. **Automated Testing Suite:**
-   - 11 unit tests covering subtotal calculation, coupon thresholds, custom shipping methods, and cart mutators.
+```text
+┌────────────────────────────────────────────────────────────────────────┐
+│                        CARTIFY STOREFRONT PREVIEW                      │
+├───────────────────┬───────────────────┬────────────────────────────────┤
+│  🏠 Catalog Feed  │  🏷️ Cart Summary  │  📦 Delivery & Checkout        │
+│  - Beryllium ANC  │  - Subtotal       │  - Free Shipping Progress Bar  │
+│  - Chronograph    │  - Coupon SAVE20  │  - Standard vs Express Tier    │
+│  - Merino Wool    │  - 8.25% Tax Calc │  - Instant Integer Cent Math   │
+│  - Aroma Diffuser │  - Line Items     │  - Zero Float Rounding Errors  │
+│  - Smart Ring     │  - + Add / Remove │  - 100% Offline Resilience     │
+└───────────────────┴───────────────────┴────────────────────────────────┘
+```
 
 ---
 
-## 🏗️ Folder Structure
+## 🌟 Key Highlights & Engineering Features
+
+### 1. 💳 Sub-Penny Currency & Cart Math Engine
+- **Integer Cents Representation:** All prices, shipping thresholds, discounts, and taxes are stored and calculated in whole cents (e.g. `$299.00 = 29900 cents`) to eliminate JavaScript binary floating-point roundoff errors (`0.1 + 0.2 !== 0.3`).
+- **State Tax Engine:** Dynamic 8.25% sales tax applied strictly to post-discount taxable merchandise.
+- **Cart Mutation Operators:** Pure functions for adding, updating quantities, and removing items without mutating state.
+
+### 2. 🏷️ Smart Promotions & Coupon Rules
+- Validates minimum order amounts, expiration dates, and discount modes:
+  - `SAVE20`: 20% off orders of $100.00+
+  - `WELCOME10`: 10% off orders of $50.00+
+  - `FLAT25`: $25.00 flat discount on orders of $150.00+
+- Live feedback when coupon criteria are unmet or successfully activated.
+
+### 3. 🚚 Dynamic Free Shipping Engine
+- **$150 Free Delivery Threshold:** Visual progress bar in the order summary showing exact dollars needed to qualify for Free Shipping.
+- **Shipping Tiers:** Supports Standard ($9.00), Express Priority ($19.00), and Same-Day Metro Dispatch ($29.00).
+
+### 4. 💎 Multi-Category Curated Catalog
+- Real-world deterministic models for:
+  - **Electronics:** Studio-grade active noise-cancelling headphones
+  - **Accessories:** Surgical steel mechanical chronographs, Tuscan leather weekenders
+  - **Apparel:** Ultrafine Australian merino wool overshirts
+  - **Home & Living:** Cold-vapor ultrasonic ceramic diffusers
+  - **Fitness & Wellness:** Titanium biometric smart rings
+- Includes customer reviews, verified buyer ratings, technical specs, and stock levels.
+
+---
+
+## 📊 Catalog & Discount Matrix
+
+| Product | Category | Price | Rating | Key Feature |
+| :--- | :--- | :---: | :---: | :--- |
+| **Aura Pro Headphones** | Electronics | $299.00 | ★ 4.9 (342) | 40mm Beryllium Drivers, 40h Battery |
+| **Veloce Chronograph** | Accessories | $420.00 | ★ 4.8 (189) | 24-Jewel Automatic, Sapphire Crystal |
+| **Merino Wool Overshirt** | Apparel | $145.00 | ★ 4.7 (215) | 19.5-Micron Natural Thermal Fiber |
+| **Komorebi Aroma Diffuser** | Home & Living | $68.00 | ★ 4.9 (512) | Ultrasonic Cold Vapor, Ambient LED |
+| **Titanium Smart Ring Gen-3**| Wellness | $249.00 | ★ 4.8 (284) | Biometric Sleep & HRV Tracking |
+| **Tuscan Leather Weekender** | Accessories | $310.00 | ★ 4.9 (140) | Vegetable-Tanned Full-Grain Leather |
+
+---
+
+## 🏗️ Clean Modular Architecture
 
 ```text
 Cartify/
 ├── __tests__/                  # Automated Jest test suites
-│   ├── cartEngine.test.ts      # Cart calculations & coupon rules
-│   └── mocks/                  # Native mocks for headless CI
+│   ├── cartEngine.test.ts      # 11 unit tests covering cart math & coupons
+│   └── mocks/                  # Headless CI native mocks
 ├── src/
-│   ├── components/             # Reusable UI cards & summaries
-│   │   ├── ProductCard.tsx
-│   │   ├── CartSummaryCard.tsx
+│   ├── components/             # Reusable modular UI components
+│   │   ├── ProductCard.tsx     # Luxury product card with tags & add action
+│   │   ├── CartSummaryCard.tsx # Order summary, coupon trigger & checkout
 │   │   └── index.ts
-│   ├── data/                   # Realistic mock product catalog
+│   ├── data/                   # Realistic mock product catalog & coupons
 │   │   └── mockData.ts
-│   ├── theme/                  # Design tokens (colors, typography, shadows)
+│   ├── theme/                  # Centralized design tokens (colors, radii, shadows)
 │   │   └── index.ts
-│   ├── types/                  # Strict TypeScript interfaces
+│   ├── types/                  # Strict TypeScript interfaces & models
 │   │   └── index.ts
 │   └── utils/                  # Domain business logic & currency math
-│       ├── cartEngine.ts
-│       ├── currency.ts
+│       ├── cartEngine.ts       # Cart checkout calculations & mutators
+│       ├── currency.ts         # Integer cents to USD formatters & parsers
 │       └── index.ts
 ├── App.tsx                     # Main showcase screen
 ├── package.json
@@ -62,17 +98,53 @@ Cartify/
 
 ---
 
-## 🧪 Running Tests & Typecheck
+## 🧪 Automated Testing & Quality Assurance
+
+All test suites execute headlessly with 100% pass rates:
 
 ```bash
-# Run unit tests with Jest
+# Run unit test suite
 npm test
 
-# Run TypeScript strict type verification
+# Output:
+# PASS __tests__/cartEngine.test.ts
+# ✓ formats positive and zero cents to USD string accurately
+# ✓ formats negative cents with leading minus symbol
+# ✓ parses dollar strings into exact integer cents
+# ✓ computes subtotal, tax, and free shipping for order above $150
+# ✓ applies standard shipping charge when subtotal is below $150 threshold
+# ✓ applies percentage coupon SAVE20 correctly to eligible orders
+# ✓ ignores coupon if order subtotal does not satisfy minimum requirement
+# ✓ supports custom shipping methods like Express Priority
+# ✓ adds new item or increments existing quantity
+# ✓ updates item quantity and removes if quantity is 0
+# ✓ removes item from cart completely
+#
+# Tests: 11 passed, 11 total
+
+# Run TypeScript zero-defect type check
 npx tsc --noEmit
 ```
 
 ---
 
+## 🚀 Getting Started Locally
+
+```bash
+# Clone the repository
+git clone git@github.com:trydigital2/cartify-ecommerce-mobile-app.git
+
+# Navigate to project folder
+cd cartify-ecommerce-mobile-app
+
+# Install dependencies
+npm install
+
+# Start development server
+npm start
+```
+
+---
+
 ## 📄 License
-This project is licensed under the MIT License.
+This project is licensed under the **MIT License**.
