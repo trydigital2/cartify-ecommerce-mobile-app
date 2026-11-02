@@ -10,6 +10,15 @@
 
 ---
 
+## 📸 Visual Showcase & Mobile Screens
+
+| 🛍️ Storefront Catalog | 💳 Shopping Cart & Checkout |
+| :---: | :---: |
+| <img src="screenshots/catalog.jpg" alt="Cartify Storefront Catalog" width="340" /> | <img src="screenshots/cart.jpg" alt="Cartify Shopping Cart" width="340" /> |
+| *Curated Multi-Category Storefront with Ratings & Badges* | *Order Summary with Free Shipping Progress & SAVE20 Promo* |
+
+---
+
 ## 📱 App Interface Overview
 
 ```text
