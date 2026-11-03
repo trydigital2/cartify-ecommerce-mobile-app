@@ -58,3 +58,37 @@ export interface OrderCheckoutCalculation {
   freeShippingThresholdGapCents: number;
   appliedCoupon: CouponCode | null;
 }
+
+export type LoyaltyTier = 'Bronze' | 'Silver' | 'Gold' | 'Platinum';
+
+export interface LoyaltyTierConfig {
+  name: LoyaltyTier;
+  minAnnualSpendCents: number;
+  pointsMultiplier: number; // e.g. 1.0, 1.25, 1.5, 2.0
+  color: string;
+  badgeEmoji: string;
+  perks: string[];
+}
+
+export interface LoyaltyAccount {
+  userId: string;
+  currentTier: LoyaltyTier;
+  pointsBalance: number;
+  lifetimeSpentCents: number;
+  annualSpentCents: number;
+  memberSince: string;
+}
+
+export interface LoyaltyBenefitCalculation {
+  currentTier: LoyaltyTier;
+  tierConfig: LoyaltyTierConfig;
+  pointsEarnedOnOrder: number;
+  pointsBalance: number;
+  balanceDollarValueCents: number;
+  maxRedeemablePoints: number;
+  maxRedeemableValueCents: number;
+  nextTier: LoyaltyTier | null;
+  centsNeededForNextTier: number;
+  tierProgressPercentage: number;
+}
+
