@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, Text, View, StatusBar } from 'react-native';
 import { MOCK_PRODUCTS, MOCK_COUPONS } from './src/data/mockData';
-import { CartItem, Product } from './src/types';
+import { CartItem, Product, LoyaltyAccount } from './src/types';
 import { ProductCard } from './src/components/ProductCard';
 import { CartSummaryCard } from './src/components/CartSummaryCard';
+import { LoyaltyRewardsCard } from './src/components/LoyaltyRewardsCard';
 import { calculateCheckout, addItemToCart } from './src/utils/cartEngine';
 import { colors, spacing, typography } from './src/theme';
 
@@ -13,12 +14,24 @@ export default function App() {
     { product: MOCK_PRODUCTS[3], quantity: 1 },
   ]);
   const [couponCode, setCouponCode] = useState<string | null>('SAVE20');
+  const [loyaltyAccount, setLoyaltyAccount] = useState<LoyaltyAccount>({
+    userId: 'vip_7701',
+    currentTier: 'Silver',
+    pointsBalance: 840,
+    lifetimeSpentCents: 165000,
+    annualSpentCents: 95000,
+    memberSince: 'March 2025',
+  });
 
   const appliedCoupon = MOCK_COUPONS.find((c) => c.code === couponCode) || null;
   const calculation = calculateCheckout(cart, appliedCoupon);
 
   const handleAddToCart = (product: Product) => {
     setCart((prev) => addItemToCart(prev, { product, quantity: 1 }));
+  };
+
+  const handleRedeemLoyalty = () => {
+    // Demo redemption handler
   };
 
   return (
@@ -30,6 +43,13 @@ export default function App() {
           <Text style={styles.brandTitle}>Cartify</Text>
           <Text style={styles.brandSubtitle}>Curated Luxury & Everyday Essentials</Text>
         </View>
+
+        {/* Loyalty VIP Member Card */}
+        <LoyaltyRewardsCard
+          account={loyaltyAccount}
+          currentOrderSubtotalCents={calculation.subtotalCents}
+          onRedeemPress={handleRedeemLoyalty}
+        />
 
         {/* Live Cart Order Summary */}
         <CartSummaryCard
