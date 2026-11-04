@@ -92,3 +92,34 @@ export interface LoyaltyBenefitCalculation {
   tierProgressPercentage: number;
 }
 
+export type ShipmentStatus =
+  | 'order_placed'
+  | 'processing'
+  | 'dispatched'
+  | 'in_transit'
+  | 'out_for_delivery'
+  | 'delivered';
+
+export interface TrackingMilestone {
+  status: ShipmentStatus;
+  title: string;
+  location: string;
+  timestamp: string;
+  isCompleted: boolean;
+  isCurrent: boolean;
+}
+
+export interface ShipmentTrackingSummary {
+  orderId: string;
+  trackingNumber: string;
+  carrier: 'FedEx Express' | 'UPS Ground' | 'DHL Worldwide' | 'USPS Priority';
+  shippingMethodName: string;
+  status: ShipmentStatus;
+  progressPercentage: number;
+  estimatedDeliveryDate: string;
+  daysRemaining: number;
+  milestones: TrackingMilestone[];
+  destinationCity: string;
+}
+
+
